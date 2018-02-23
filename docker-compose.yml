@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  app-db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: sonah-app
+      MYSQL_USER: springuser
+      MYSQL_PASSWORD: doesntmatter
+      MYSQL_ROOT_PASSWORD: andigenu
+
+  sonah-base:
+    image: ionita/sonah-base
+    ports:
+      - "8080:8080"
+    command: ["./wait-for-it.sh", "app-db:3306"]
+
+  sonah-front:
+    image: ionita/sonah-front
+    ports:
+      - "80:80"
+    volumes:
+      - ./sonah-front:/usr/src/app
